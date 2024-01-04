@@ -1,4 +1,4 @@
-package me.kimihiqq.domain
+package me.kimihiqq.domain.KeyValue
 
 data class KeyValue(
     val key: String,

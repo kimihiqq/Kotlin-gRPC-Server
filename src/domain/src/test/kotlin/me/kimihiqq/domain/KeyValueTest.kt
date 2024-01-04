@@ -1,5 +1,6 @@
 package me.kimihiqq.domain
 
+import me.kimihiqq.domain.KeyValue.KeyValue
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
