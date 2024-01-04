@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  local-db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - 3306
+  local-db-migrate:
+    image: flyway/flyway:7
+    restart: always
+    environment:
+      - FLYWAY_DB_URL=${FLYWAY_DB_URL}
+      - FLYWAY_DB_USER=${FLYWAY_DB_USER}
+      - FLYWAY_DB_PASSWORD=${FLYWAY_DB_PASSWORD}
+    command: migrate
+    volumes:
+      - ./src/infrastructure/boot/src/main/resources/db/flyway.conf:/flyway/conf/flyway.conf
+      - ./src/infrastructure/boot/src/main/resources/db/migration:/flyway/sql
