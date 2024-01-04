@@ -19,4 +19,5 @@ fun includeProject(name: String, projectPath: String? = null) {
 includeProject(":domain", "src/domain")
 includeProject(":application", "src/application")
 includeProject(":presentation", "src/presentation")
-includeProject(":infrastructure", "src/infrastructure")
+includeProject(":infrastructure:boot", "src/infrastructure/boot")
+includeProject(":infrastructure:provider", "src/infrastructure/provider")
