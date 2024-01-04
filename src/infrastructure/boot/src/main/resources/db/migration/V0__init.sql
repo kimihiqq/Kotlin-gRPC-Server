@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS KeyValue (
+  `key` VARCHAR(50) NOT NULL,
+  `value` TEXT,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
