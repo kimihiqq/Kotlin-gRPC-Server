@@ -1,6 +1,10 @@
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":application"))
+    implementation(project(":presentation"))
+    implementation(project(":infrastructure:provider"))
     implementation("com.zaxxer:HikariCP:4.0.3")
+    implementation("io.grpc:grpc-netty:1.59.0")
 
     runtimeOnly("mysql:mysql-connector-java:8.0.29")
 
