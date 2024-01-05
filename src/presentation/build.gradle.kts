@@ -5,18 +5,19 @@ plugins {
     id("com.google.protobuf") version "0.8.17"
 }
 
-
 dependencies {
     implementation(project(":application"))
+    implementation(project(":domain"))
+    implementation("io.grpc:grpc-stub:1.59.0")
+    implementation("io.grpc:grpc-protobuf:1.59.0")
+    implementation("io.grpc:grpc-netty:1.59.0")
+    implementation("com.google.protobuf:protobuf-java:3.25.0")
+    implementation("javax.annotation:javax.annotation-api:1.3.2")
+    testImplementation("org.mockito:mockito-inline:4.11.0")
 
-    implementation("io.grpc:grpc-kotlin-stub:1.4.0")
-    implementation("io.grpc:grpc-protobuf:1.59.1")
-    implementation("io.grpc:grpc-netty:1.60.0")
-    implementation("com.google.protobuf:protobuf-java:3.25.1")
+    testImplementation("io.grpc:grpc-testing:1.59.0")
 
-    testImplementation("io.grpc:grpc-testing:1.60.0")
 }
-
 
 protobuf {
     protoc {
@@ -24,7 +25,7 @@ protobuf {
     }
     plugins {
         id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.43.2"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.60.0"
         }
     }
     generateProtoTasks {
