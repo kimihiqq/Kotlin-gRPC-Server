@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package me.kimihiqq;
+
+option java_package = "me.kimihiqq.grpc";
+option java_multiple_files = true;
+
+import "google/protobuf/empty.proto";
+
+// 문자열로 된 key, value 를 저장하고 조회할 수 있는 gRPC 서비스
+service KeyValueService {
+  // 요청으로 주어진 key 에 대한 value 를 응답으로 반환합니다.
+  rpc Get(GetRequest) returns (GetResponse);
+
+  // 요청으로 주어진 key 에 value 를 저장합니다. 이미 해당 key 가 존재하는 경우 덮어씁니다.
+  rpc Save(SaveRequest) returns (SaveResponse);
+}
+
+message GetRequest {
+  string key = 1; // 조회할 key
+}
+
+message GetResponse {
+  string key = 1; // 요청된 key
+  oneof result {
+    // 요청된 key 에 대한 value 가 존재하는 경우, 해당 value
+    string value = 2;
+
+    // 요청된 key 에 대한 value 가 존재하지 않는 경우
+    google.protobuf.Empty no_value = 3;
+  }
+}
+
+message SaveRequest {
+  string key = 1; // 저장할 key
+  string value = 2; // 저장할 value
+}
+
+message SaveResponse {
+  string key = 1; // 저장된 key
+  string value = 2; // 저장된 value
+}
