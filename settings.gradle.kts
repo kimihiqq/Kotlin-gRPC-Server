@@ -13,7 +13,7 @@ rootProject.name = "gRPCKeyValueServer"
 
 fun includeProject(name: String, projectPath: String? = null) {
     include(name)
-    projectPath?.let { project(name).projectDir = File(it) }
+    projectPath?.run { project(name).projectDir = File(this) }
 }
 
 includeProject(":domain", "src/domain")

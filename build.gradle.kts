@@ -19,9 +19,12 @@ subprojects {
     dependencies {
         implementation(kotlin("stdlib"))
         testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
+
+        testImplementation("org.mockito:mockito-core:3.11.2")
     }
 
     tasks.test {
         useJUnitPlatform()
+        testLogging.showStandardStreams = true
     }
 }
