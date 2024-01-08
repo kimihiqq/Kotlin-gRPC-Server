@@ -26,7 +26,6 @@ class JpaKeyValueRepository : KeyValueRepository {
         return try {
             entityManager.find(KeyValue::class.java, key)
         } catch (e: Exception) {
-            entityManager.transaction.rollback()
             throw e
         } finally {
             entityManager.close()
