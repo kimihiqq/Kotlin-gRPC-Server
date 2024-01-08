@@ -14,6 +14,9 @@ service KeyValueService {
 
   // 요청으로 주어진 key 에 value 를 저장합니다. 이미 해당 key 가 존재하는 경우 덮어씁니다.
   rpc Save(SaveRequest) returns (SaveResponse);
+
+  // 주어진 key에 해당하는 데이터를 삭제합니다.
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
 }
 
 message GetRequest {
@@ -39,4 +42,14 @@ message SaveRequest {
 message SaveResponse {
   string key = 1; // 저장된 key
   string value = 2; // 저장된 value
+}
+
+
+message DeleteRequest {
+  string key = 1; // 삭제할 key
+}
+
+message DeleteResponse {
+  string key = 1; // 삭제된 key
+  bool success = 2; // 삭제 성공 여부
 }

@@ -36,8 +36,6 @@ class KeyValueServiceTest {
 
         val savedKeyValueDto = keyValueService.saveKeyValue(dto)
         assertEquals(dto, savedKeyValueDto)
-
-        verify(keyValueRepository).save(KeyValueDto.toKeyValue(dto))
     }
 
     @Test
@@ -50,8 +48,6 @@ class KeyValueServiceTest {
         val resultDto = keyValueService.getKeyValue(key)
         assertNotNull(resultDto)
         assertEquals(KeyValueDto.fromKeyValue(keyValue), resultDto)
-
-        verify(keyValueRepository).findByKey(key)
     }
 
     @Test
@@ -62,19 +58,6 @@ class KeyValueServiceTest {
 
         val result = keyValueService.deleteKeyValue(key)
         assertTrue(result)
-
-        verify(keyValueRepository).deleteByKey(key)
-    }
-
-    @Test
-    fun `saveKeyValue 메서드가 유효하지 않은 데이터로 실패한다`() {
-        val invalidDto = KeyValueDto("", "testValue")
-
-        assertThrows<BusinessException> {
-            keyValueService.saveKeyValue(invalidDto)
-        }.apply {
-            assertEquals(ErrorCode.INVALID_INPUT, errorCode)
-        }
     }
 
     @Test

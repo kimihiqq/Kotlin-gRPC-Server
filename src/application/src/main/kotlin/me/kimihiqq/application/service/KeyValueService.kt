@@ -13,29 +13,44 @@ class KeyValueService(private val repository: KeyValueRepository) {
     fun saveKeyValue(dto: KeyValueDto): KeyValueDto {
         try {
             val savedKeyValue = repository.save(KeyValueDto.toKeyValue(dto))
-            logger.info("KeyValue 저장 성공: {}", dto.key)
+            logger.info("KeyValue 저장 성공: 키 - {}, 값 - {}", dto.key, dto.value)
             return KeyValueDto.fromKeyValue(savedKeyValue)
         } catch (e: IllegalArgumentException) {
             logger.error("KeyValue 저장 실패: 유효하지 않은 데이터, 키: {}", dto.key, e)
             throw BusinessException(ErrorCode.INVALID_INPUT)
+        } catch (e: Exception) {
+            logger.error("KeyValue 저장 실패: 데이터베이스 오류, 키: {}", dto.key, e)
+            throw BusinessException(ErrorCode.DATABASE_ERROR)
         }
     }
 
-    fun getKeyValue(key: String): KeyValueDto? {
-        return repository.findByKey(key)?.let(KeyValueDto::fromKeyValue)
-            ?: run {
-                logger.warn("KeyValue 조회 실패: 키 {}에 해당하는 값이 존재하지 않음", key)
-                throw BusinessException(ErrorCode.KEY_NOT_FOUND)
-            }
+    fun getKeyValue(key: String): KeyValueDto {
+        return try {
+            repository.findByKey(key)?.let {
+                logger.info("KeyValue 조회 성공: 키 - {}, 값 - {}", key, it.value)
+                KeyValueDto.fromKeyValue(it)
+            } ?: throw BusinessException(ErrorCode.KEY_NOT_FOUND)
+        } catch (e: BusinessException) {
+            throw e
+        } catch (e: Exception) {
+            logger.error("KeyValue 조회 실패: 데이터베이스 오류, 키: {}", key, e)
+            throw BusinessException(ErrorCode.DATABASE_ERROR)
+        }
     }
 
     fun deleteKeyValue(key: String): Boolean {
-        val result = repository.deleteByKey(key)
-        if (!result) {
-            logger.warn("KeyValue 삭제 실패: 키 {}에 해당하는 값이 존재하지 않음", key)
-            throw BusinessException(ErrorCode.KEY_NOT_FOUND)
+        try {
+            val result = repository.deleteByKey(key)
+            if (!result) {
+                throw BusinessException(ErrorCode.KEY_NOT_FOUND)
+            }
+            logger.info("KeyValue 삭제 성공: 키 {}", key)
+            return true
+        } catch (e: BusinessException) {
+            throw e
+        } catch (e: Exception) {
+            logger.error("KeyValue 삭제 실패: 데이터베이스 오류, 키: {}", key, e)
+            throw BusinessException(ErrorCode.DATABASE_ERROR)
         }
-        logger.info("KeyValue 삭제 성공: 키 {}", key)
-        return result
     }
 }
