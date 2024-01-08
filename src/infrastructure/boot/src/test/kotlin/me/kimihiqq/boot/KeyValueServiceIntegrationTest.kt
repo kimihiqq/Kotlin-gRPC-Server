@@ -10,7 +10,6 @@ import me.kimihiqq.grpc.GetRequest
 import me.kimihiqq.grpc.KeyValueServiceGrpc
 import me.kimihiqq.grpc.SaveRequest
 import me.kimihiqq.presentation.serviceImpl.KeyValueServiceImpl
-import me.kimihiqq.provider.config.EntityManagerConfig
 import me.kimihiqq.provider.repository.impl.JpaKeyValueRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
