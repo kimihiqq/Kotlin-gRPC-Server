@@ -52,7 +52,7 @@
     
 
 ## 스키마 및 구현 이미지
-<img width="477" alt="이미지1" src="https://github.com/kimihiqq/Kotlin-gRPC-Server/assets/134909318/fecd03a0-9e63-4f00-8a9f-0b02525c5339">
-<img width="477" alt="이미지2" src="https://github.com/kimihiqq/Kotlin-gRPC-Server/assets/134909318/18bd68a5-7e7d-4e1e-9c0c-b52a7e814253">
+<img width="547" alt="이미지1" src="https://github.com/kimihiqq/Kotlin-gRPC-Server/assets/134909318/fecd03a0-9e63-4f00-8a9f-0b02525c5339">
+<img width="547" alt="이미지2" src="https://github.com/kimihiqq/Kotlin-gRPC-Server/assets/134909318/18bd68a5-7e7d-4e1e-9c0c-b52a7e814253">
 
 
