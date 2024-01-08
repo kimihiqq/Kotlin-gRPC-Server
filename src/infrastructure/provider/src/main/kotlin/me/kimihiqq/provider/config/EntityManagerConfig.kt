@@ -11,6 +11,10 @@ object EntityManagerConfig {
         entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName)
     }
 
+    fun initializeWithProperties(properties: Map<String, Any>) {
+        entityManagerFactory = Persistence.createEntityManagerFactory("KeyValuePersistenceUnit", properties)
+    }
+
     fun createEntityManager(): EntityManager {
         if (!::entityManagerFactory.isInitialized) {
             throw IllegalStateException("EntityManagerFactory is not initialized")

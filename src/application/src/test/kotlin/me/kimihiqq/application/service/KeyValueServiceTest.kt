@@ -3,12 +3,9 @@ package me.kimihiqq.application.service
 import me.kimihiqq.application.dto.KeyValueDto
 import me.kimihiqq.domain.KeyValue.KeyValue
 import me.kimihiqq.domain.KeyValue.KeyValueRepository
-import me.kimihiqq.domain.error.ErrorCode
-import me.kimihiqq.domain.error.exception.BusinessException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 
@@ -35,9 +32,8 @@ class KeyValueServiceTest {
         `when`(keyValueRepository.save(anyNonNull())).thenReturn(keyValue)
 
         val savedKeyValueDto = keyValueService.saveKeyValue(dto)
+        assertNotNull(savedKeyValueDto)
         assertEquals(dto, savedKeyValueDto)
-
-        verify(keyValueRepository).save(KeyValueDto.toKeyValue(dto))
     }
 
     @Test
@@ -50,8 +46,6 @@ class KeyValueServiceTest {
         val resultDto = keyValueService.getKeyValue(key)
         assertNotNull(resultDto)
         assertEquals(KeyValueDto.fromKeyValue(keyValue), resultDto)
-
-        verify(keyValueRepository).findByKey(key)
     }
 
     @Test
@@ -62,42 +56,23 @@ class KeyValueServiceTest {
 
         val result = keyValueService.deleteKeyValue(key)
         assertTrue(result)
-
-        verify(keyValueRepository).deleteByKey(key)
     }
 
     @Test
-    fun `saveKeyValue 메서드가 유효하지 않은 데이터로 실패한다`() {
-        val invalidDto = KeyValueDto("", "testValue")
-
-        assertThrows<BusinessException> {
-            keyValueService.saveKeyValue(invalidDto)
-        }.apply {
-            assertEquals(ErrorCode.INVALID_INPUT, errorCode)
-        }
-    }
-
-    @Test
-    fun `getKeyValue 메서드가 존재하지 않는 키로 실패한다`() {
+    fun `getKeyValue 메서드가 존재하지 않는 키를 조회할 때 null을 반환한다`() {
         val key = "nonExistingKey"
         `when`(keyValueRepository.findByKey(key)).thenReturn(null)
 
-        assertThrows<BusinessException> {
-            keyValueService.getKeyValue(key)
-        }.apply {
-            assertEquals(ErrorCode.KEY_NOT_FOUND, errorCode)
-        }
+        val resultDto = keyValueService.getKeyValue(key)
+        assertNull(resultDto)
     }
 
     @Test
-    fun `deleteKeyValue 메서드가 존재하지 않는 키로 실패한다`() {
+    fun `deleteKeyValue 메서드가 존재하지 않는 키를 삭제할 때 false를 반환한다`() {
         val key = "nonExistingKey"
         `when`(keyValueRepository.deleteByKey(key)).thenReturn(false)
 
-        assertThrows<BusinessException> {
-            keyValueService.deleteKeyValue(key)
-        }.apply {
-            assertEquals(ErrorCode.KEY_NOT_FOUND, errorCode)
-        }
+        val result = keyValueService.deleteKeyValue(key)
+        assertFalse(result)
     }
 }

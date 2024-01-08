@@ -10,7 +10,7 @@ class JpaKeyValueRepository : KeyValueRepository {
         val entityManager = EntityManagerConfig.createEntityManager()
         return try {
             entityManager.transaction.begin()
-            entityManager.persist(keyValue)
+            entityManager.merge(keyValue)
             entityManager.transaction.commit()
             keyValue
         } catch (e: Exception) {
@@ -26,7 +26,6 @@ class JpaKeyValueRepository : KeyValueRepository {
         return try {
             entityManager.find(KeyValue::class.java, key)
         } catch (e: Exception) {
-            entityManager.transaction.rollback()
             throw e
         } finally {
             entityManager.close()
