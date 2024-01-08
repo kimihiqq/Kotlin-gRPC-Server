@@ -1,3 +1,12 @@
+plugins {
+    kotlin("jvm")
+    application
+}
+
+application {
+    mainClass.set("me.kimihiqq.boot.MainKt")
+}
+
 dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
