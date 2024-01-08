@@ -1,4 +1,4 @@
-# **KeyValue gRPC Server**
+# **Kotlin-gRPC-Server**
 
 이 프로젝트는 Kotlin과 gRPC를 사용하여 구현된 Key-Value 저장 및 조회 서버입니다. 멀티스레딩을 지원하는 gRPC 서버를 통해 문자열 형태의 Key와 Value를 저장, 삭제하고 조회할 수 있습니다.
 
