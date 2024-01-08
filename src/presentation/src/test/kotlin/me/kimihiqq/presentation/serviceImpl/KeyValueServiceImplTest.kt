@@ -5,11 +5,8 @@ import io.grpc.StatusRuntimeException
 import io.grpc.stub.StreamObserver
 import me.kimihiqq.application.dto.KeyValueDto
 import me.kimihiqq.application.service.KeyValueService
-import me.kimihiqq.domain.error.ErrorCode
-import me.kimihiqq.domain.error.exception.BusinessException
 import me.kimihiqq.grpc.*
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
@@ -52,16 +49,17 @@ class KeyValueServiceImplTest {
     }
 
     @Test
-    fun `get 메서드가 존재하지 않는 키로 실패한다`() {
+    fun `get 메서드가 존재하지 않는 키로 조회 시 no_value 반환한다`() {
         val request = GetRequest.newBuilder().setKey("invalidKey").build()
-        `when`(keyValueService.getKeyValue(anyString())).thenThrow(BusinessException(ErrorCode.KEY_NOT_FOUND))
+        `when`(keyValueService.getKeyValue(anyString())).thenReturn(null)
 
         keyValueServiceImpl.get(request, getResponseObserver)
 
-        val errorCaptor = ArgumentCaptor.forClass(StatusRuntimeException::class.java)
-        verify(getResponseObserver).onError(errorCaptor.capture())
-        val exception = errorCaptor.value
-        assertTrue(exception.status.code == Status.Code.NOT_FOUND)
+        val responseCaptor = ArgumentCaptor.forClass(GetResponse::class.java)
+        verify(getResponseObserver).onNext(responseCaptor.capture())
+        val response = responseCaptor.value
+        assertEquals("invalidKey", response.key)
+        assertNotNull(response.noValue)
     }
 
     @Test
@@ -80,15 +78,15 @@ class KeyValueServiceImplTest {
     }
 
     @Test
-    fun `save 메서드가 유효하지 않은 데이터로 실패한다`() {
+    fun `save 메서드가 데이터베이스 오류 시 실패 처리한다`() {
         val request = SaveRequest.newBuilder().setKey("invalidKey").setValue("invalidValue").build()
-        `when`(keyValueService.saveKeyValue(anyNonNull())).thenThrow(BusinessException(ErrorCode.INVALID_INPUT))
+        `when`(keyValueService.saveKeyValue(anyNonNull())).thenReturn(null)
 
         keyValueServiceImpl.save(request, saveResponseObserver)
 
         val errorCaptor = ArgumentCaptor.forClass(StatusRuntimeException::class.java)
         verify(saveResponseObserver).onError(errorCaptor.capture())
         val exception = errorCaptor.value
-        assertTrue(exception.status.code == Status.Code.INVALID_ARGUMENT)
+        assertEquals(Status.Code.INTERNAL, exception.status.code)
     }
 }

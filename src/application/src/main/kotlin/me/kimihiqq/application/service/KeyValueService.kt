@@ -2,8 +2,6 @@ package me.kimihiqq.application.service
 
 import me.kimihiqq.application.dto.KeyValueDto
 import me.kimihiqq.domain.KeyValue.KeyValueRepository
-import me.kimihiqq.domain.error.ErrorCode
-import me.kimihiqq.domain.error.exception.BusinessException
 import org.slf4j.LoggerFactory
 
 class KeyValueService(private val repository: KeyValueRepository) {
