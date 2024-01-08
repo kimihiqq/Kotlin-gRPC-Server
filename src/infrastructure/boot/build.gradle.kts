@@ -7,7 +7,6 @@ dependencies {
     implementation("io.grpc:grpc-netty:1.59.0")
     implementation("io.grpc:grpc-stub:1.59.0")
     implementation("io.grpc:grpc-protobuf:1.59.0")
-    implementation("io.grpc:grpc-netty:1.59.0")
     implementation("org.hibernate:hibernate-entitymanager:5.6.10.Final")
 
     runtimeOnly("mysql:mysql-connector-java:8.0.29")
