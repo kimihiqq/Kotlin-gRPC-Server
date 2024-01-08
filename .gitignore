@@ -189,7 +189,5 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle,kotlin,java,intellij+all,macos
 
-
-.env
 dbdata
 application.properties
